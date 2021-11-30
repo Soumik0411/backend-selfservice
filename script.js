@@ -16,8 +16,8 @@ app.use(cors());
 var connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'Soumik@2000',
-  database: 'selfservice',
+  password: 'S1w2e3t4a@',
+  database: 'ais',
   insecureAuth: true,
 });
 
@@ -378,7 +378,6 @@ app.post('/upcoming_dues/', function (req, resp) {
 app.post('/get_dashboard_data/', function (req, resp) {
 
   masterModel.get_dashboard_data(connection, req.body.studentid, function (err, result) {
-    //console.log(result);
     if (err) {
       console.log(err);
     }
@@ -735,195 +734,7 @@ app.post('/get_dashboard_details/', function (req, resp) {
         Total_payment_Module: result3,
         Upcoming_Due_Module: result4,
       }
-    //   console.log(responseData);
-    resp.send(responseData);
-  }
-
-  });
-});
-
-app.post('/get_invoice_details/', function (req, resp) {
-
-  masterModel.get_invoice_details(connection, req.body.studentid, function (err, result,result_session) {
-    //console.log(result);
-    var components=[];
-
-    var invoice = new Array();
-    var total_amt = 0;
-    var invoice_no ="";
-    var sum = 0;
-    var result1 = parseInt(result.length);
-    var p =0;
-
-
-    for(let i=0; i<result1; i++){
-     // console.log(result[i].invoice_no);
-      
-      if(invoice_no != result[i].invoice_no && i > 0){
-        var responseData = {
-          invoice_id: invoice_no,
-          total_amount:sum,
-          component_data: components          
-        }
-
-        invoice.push(responseData);
-        components = new Array();
-     
-        sum=0;
-
-        components.push(result[i]);
-        sum += parseInt(result[i].amount);
-
-        
-        p = p+1;
-      }
-      else
-      {
-        components.push(result[i]);
-        sum += parseInt(result[i].amount);
-
-
-        
-        if(i == result1-1){
-          var responseData = {
-            invoice_id: invoice_no,
-            total_amount:sum,
-            component_data: components,
-          }
-          invoice.push(responseData);
-         
-
-        }
-      }
-
-    
-      invoice_no = result[i].invoice_no; 
-      total_amt = total_amt + parseInt(result[i].amount); 
-    }
-
-    if (err){
-      console.log(err);
-    }
-    else{
-
-      var responseArray = {
-        total_due_amount: total_amt,
-        academic_session: result_session,
-        invoices: invoice,
-      }
-     // console.log(result_session[0].session_name);
-
-    var responseData = {
-      //requestUrl: req.originalUrl,
-      data: responseArray,
-    }
-
-    resp.send(responseData);
-  }
-
-  });
-});
-
-
-app.post('/get_current_details/', function (req, resp) {
-
-  masterModel.get_current_details(connection, req.body.studentid, function (err, result,result_session) {
-    //console.log(result);
-    var components=[];
-
-    var invoice = new Array();
-    var total_amt = 0;
-    var invoice_no ="";
-    var sum = 0;
-    var result1 = parseInt(result.length);
-    var p =0;
-
-
-    for(let i=0; i<result1; i++){
-     // console.log(result[i].invoice_no);
-      
-      if(invoice_no != result[i].invoice_no && i > 0){
-        var responseData = {
-          invoice_id: invoice_no,
-          total_amount:sum,
-          component_data: components          
-        }
-
-        invoice.push(responseData);
-        components = new Array();
-     
-        sum=0;
-
-        components.push(result[i]);
-        sum += parseInt(result[i].amount);
-
-        
-        p = p+1;
-      }
-      else
-      {
-        components.push(result[i]);
-        sum += parseInt(result[i].amount);
-
-
-        
-        if(i == result1-1){
-          var responseData = {
-            invoice_id: invoice_no,
-            total_amount:sum,
-            component_data: components,
-          }
-          invoice.push(responseData);
-         
-
-        }
-      }
-
-    
-      invoice_no = result[i].invoice_no; 
-      total_amt = total_amt + parseInt(result[i].amount); 
-    }
-
-    if (err){
-      console.log(err);
-    }
-    else{
-
-      var responseArray = {
-        total_due_amount: total_amt,
-        academic_session: result_session,
-        invoices: invoice,
-      }
-     // console.log(result_session[0].session_name);
-
-    var responseData = {
-      //requestUrl: req.originalUrl,
-      data: responseArray,
-    }
-
-    resp.send(responseData);
-  }
-
-  });
-});
-
-
-app.post('/get_dashboard_details/', function (req, resp) {
-
-  masterModel.get_dashboard_details(connection, req.body.studentid, function (err, result, result1, result2, result3, result4) {
-    //console.log(result);
-    if (err){
-      console.log(err);
-    }
-    else{
-      var responseData = {
-        Current_Due_Module: result,
-        Previous_Due_Module: result1,
-        Total_Commitment_module: result2,
-        Total_payment_Module: result3,
-        Upcoming_Due_Module: result4,
-      }
-    //   console.log(responseData);
+    console.log(responseData);
     resp.send(responseData);
   }
 
